@@ -7,7 +7,6 @@ public class OrdenacaoQuickSort<T extends Comparable> extends OrdenacaoAbstract 
     private void quickSort(int inicio, int fim) {
         if (inicio < fim) {
             int pivo = particionar(inicio, fim);
-            System.out.println(pivo);
             quickSort(inicio, pivo - 1);
             quickSort(pivo + 1, fim);
         }
