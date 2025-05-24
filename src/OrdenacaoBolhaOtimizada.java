@@ -17,8 +17,8 @@ public class OrdenacaoBolhaOtimizada<T extends Comparable> extends OrdenacaoAbst
      * é atualizado, o for externo é quebrado ao fim de sua primeira iteração.
      * 
      * Assim, temos, para o melhor caso:
-     * B(n) = 2 + (n-1) 
-     * B(n) = n + 1 -> Omega(n)
+     * B(n) = 3 + (n-1) 
+     * B(n) = n + 2 -> Omega(n)
      */
 
     
