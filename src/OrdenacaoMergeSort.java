@@ -5,10 +5,43 @@ public class OrdenacaoMergeSort<T extends Comparable> extends OrdenacaoAbstract 
     }
 
     /*
-     * ------- Custo total S(n) para o método mergeSort(0, n) -------
+     * --- Custo S(n) para mergeSort(0, n) ---
+     * * S(n) = 2 + 2 . S(n/2) + M(n)
      * S(n) = 2 + 2 . S(n/2) + 9n + 8
      * S(n) = 9n + 10 + 2.S(n/2)
-     * S(n) =  2.S(n/2) + 9n + 10 
+     * S(n) = 2.S(n/2) + 9n + 10 
+     * ---------------------------------------
+     */
+
+    /*
+     * Como a função S(n) para mergeSort contém duas chamadas recursivas
+     * com metade do vetor (n/2), a função corresponde a uma recorrência
+     * e se enquadra perfeitamente no formato do Teorema Mestre, em que
+     * T(n) = aT(n/b) + f(n). Tomando a fórmula como referência, temos:
+     *
+     *  S(n) = T(n) = 2T(n/2) + 9n + 10, de modo que:
+     *      a = 2
+     *      b = 2
+     *      f(n) = 9n + 10
+     * 
+     *  Medindo o custo total da recursão:
+     *  log_b (a - ε) = log_2 (2 - ε)
+     * 
+     *  f(n) <= O(n^(log_b (a - ε)))
+     *  9n + 10 <= c . n^(log_2 (2 - ε))
+     * 
+     *  -> Para ser verdadeiro, n precisa ter expoente 1, e, para tanto:
+     *    𝜀 = 0; log_2 (2 - 1) = 1
+     * 
+     *  9n + 10 <= c . n^1 (VERDADEIRO)
+     * 
+     *  Ou seja, o crescimento do custo da recursão é proporcional ao 
+     *  crescimento de n, o que configura o caso 2, onde 𝜀 = 0.
+     * 
+     *  Assim, temos que:
+     *      1. f(n) pertence a teta(n^(log_b a));
+     *      2. T(n) pertence a teta(n^(log_b a) log n);
+     *      2. Como n^log_b a = 1, então T(n) pertence a teta(n log n).
      */
 
     private void mergeSort(int inicio, int fim) { 
@@ -21,11 +54,12 @@ public class OrdenacaoMergeSort<T extends Comparable> extends OrdenacaoAbstract 
     }
     
     /*
-     * ------- Custo total M(n) para o método merge(0, n, n/2) -------
+     * ------- Custo M(n) para merge(0, n, n/2) ------------------
      * M(n) = Operações básicas + 2 for's + For grande + 2 while's
      * M(n) = 8 + 2 . (n/2) +  n . 4 + 2 . (n/2) . 3
-     * M(n) =  8 + n + 4n + 3n
+     * M(n) = 8 + n + 4n + 3n
      * M(n) = 7n + 8
+     * -----------------------------------------------------------
      */
 
     @SuppressWarnings("unchecked")

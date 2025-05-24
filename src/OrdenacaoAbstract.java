@@ -11,9 +11,9 @@ public abstract class OrdenacaoAbstract<T extends Comparable> {
     }
 
     public void trocar(int a, int b) {
-        T auxiliar = getInfo()[a];
-        getInfo()[a] = getInfo()[b];
-        getInfo()[b] = auxiliar;
+        T auxiliar = getInfo()[a]; // 1
+        getInfo()[a] = getInfo()[b]; // 1
+        getInfo()[b] = auxiliar; // 1
     }
 
     public abstract void ordenar();
