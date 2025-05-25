@@ -19,7 +19,7 @@ public class OrdenacaoMergeSort<T extends Comparable> extends OrdenacaoAbstract 
      * e se enquadra perfeitamente no formato do Teorema Mestre, em que
      * T(n) = aT(n/b) + f(n). Tomando a fórmula como referência, temos:
      *
-     *  S(n) = T(n) = 2T(n/2) + 9n + 10, de modo que:
+     *  T(n) = S(n) = 2S(n/2) + 8n + 10, de modo que:
      *      a = 2
      *      b = 2
      *      f(n) = 8n + 10
