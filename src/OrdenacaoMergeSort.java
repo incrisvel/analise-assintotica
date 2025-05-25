@@ -7,9 +7,9 @@ public class OrdenacaoMergeSort<T extends Comparable> extends OrdenacaoAbstract 
     /*
      * --- Custo S(n) para mergeSort(0, n) ---
      * * S(n) = 2 + 2 . S(n/2) + M(n)
-     * S(n) = 2 + 2 . S(n/2) + 9n + 8
-     * S(n) = 9n + 10 + 2.S(n/2)
-     * S(n) = 2.S(n/2) + 9n + 10 
+     * S(n) = 2 + 2 . S(n/2) + 7n + 8
+     * S(n) = 7n + 10 + 2.S(n/2)
+     * S(n) = 2.S(n/2) + 7n + 10 
      * ---------------------------------------
      */
 
@@ -22,18 +22,18 @@ public class OrdenacaoMergeSort<T extends Comparable> extends OrdenacaoAbstract 
      *  S(n) = T(n) = 2T(n/2) + 9n + 10, de modo que:
      *      a = 2
      *      b = 2
-     *      f(n) = 9n + 10
+     *      f(n) = 7n + 10
      * 
      *  Medindo o custo total da recursão:
      *  log_b (a - ε) = log_2 (2 - ε)
      * 
      *  f(n) <= O(n^(log_b (a - ε)))
-     *  9n + 10 <= c . n^(log_2 (2 - ε))
+     *  7n + 10 <= c . n^(log_2 (2 - ε))
      * 
      *  -> Para ser verdadeiro, n precisa ter expoente 1, e, para tanto:
      *    𝜀 = 0; log_2 (2 - 1) = 1
      * 
-     *  9n + 10 <= c . n^1 (VERDADEIRO)
+     *  7n + 10 <= c . n^1 (VERDADEIRO)
      * 
      *  Ou seja, o crescimento do custo da recursão é proporcional ao 
      *  crescimento de n, o que configura o caso 2, onde 𝜀 = 0.
