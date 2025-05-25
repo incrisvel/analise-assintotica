@@ -23,13 +23,13 @@ public class OrdenacaoQuickSort<T extends Comparable> extends OrdenacaoAbstract 
      *      f(n) = 3n + 8
      * 
      *  Medindo o custo total da recursão:
-     *  log_b (a - ε) = log_2 (2 - ε)
+     *  (log_b a) - ε = (log_2 2) - ε
      * 
-     *  f(n) <= O(n^(log_b (a - ε)))
-     *  3n + 8 <= c . n^(log_2 (2 - ε))
+     *  f(n) <= O(n^(log_b a - ε))
+     *  3n + 8 <= c . n^(log_2 2 - ε))
      * 
      *  -> Para ser verdadeiro, n precisa ter expoente 1, e, para tanto:
-     *    𝜀 = 0; log_2 (2 - 1) = 1
+     *    𝜀 = 0; (log_2 2) - 0 = 1
      * 
      *  3n + 8 <= c . n^1 (VERDADEIRO)
      * 
