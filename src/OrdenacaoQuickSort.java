@@ -1,115 +1,91 @@
+@SuppressWarnings("rawtypes")
 public class OrdenacaoQuickSort<T extends Comparable> extends OrdenacaoAbstract {
-
-    public static int subproblemas = 0;
-    public static double somaDosFatores = 0;
-    public static int chamadasValidas = 0;
-    public static int custoParticionamento = 0;
-
     public void ordenar() {
-        subproblemas = 0;// Quantidade de chamadas recursivas o algoritmo faz em cada etapa
-        somaDosFatores = 0;
-        chamadasValidas = 0;
         quickSort(0, getInfo().length - 1);
+    }
 
-        if (chamadasValidas > 0) {
-            double mediaFatorDivisao = somaDosFatores / chamadasValidas;
-            System.out.println("Média dos fatores de divisão (aproximado): " + mediaFatorDivisao);
+    /*
+     * --- Custo Q(n) para quickSort(0, n) ---
+     * * Q(n) = P(n) + 2Q(n/2)
+     *   Q(n) = 2Q(n/2) + 3n + 8
+     * ---------------------------------------
+     */
+  
+    /*
+     * Como a função Q(n) para quickSort contém duas chamadas recursivas
+     * com metade do vetor (n/2), a função corresponde a uma recorrência
+     * e se enquadra perfeitamente no formato do Teorema Mestre, em que
+     * T(n) = aT(n/b) + f(n). Tomando a fórmula como referência, temos:
+     *
+     * T(n) = Q(n) = 2Q(n/2) + 3n + 8, de modo que:
+     *      a = 2
+     *      b = 2
+     *      f(n) = 3n + 8
+     * 
+     *  Medindo o custo total da recursão:
+     *  log_b (a - ε) = log_2 (2 - ε)
+     * 
+     *  f(n) <= O(n^(log_b (a - ε)))
+     *  3n + 8 <= c . n^(log_2 (2 - ε))
+     * 
+     *  -> Para ser verdadeiro, n precisa ter expoente 1, e, para tanto:
+     *    𝜀 = 0; log_2 (2 - 1) = 1
+     * 
+     *  3n + 8 <= c . n^1 (VERDADEIRO)
+     * 
+     *  Ou seja, o crescimento do custo da recursão é proporcional ao 
+     *  crescimento de n, o que configura o caso 2, onde 𝜀 = 0.
+     * 
+     *  Assim, temos que:
+     *      1. f(n) pertence a teta(n^(log_b a));
+     *      2. T(n) pertence a teta(n^(log_b a) log n);
+     *      2. Como n^log_b a = 1, então T(n) pertence a teta(n log n).
+     */
+
+    private void quickSort(int inicio, int fim) {
+        if (inicio < fim) { // 1
+            int pivo = particionar(inicio, fim); // P(n)
+            quickSort(inicio, pivo - 1); // Q(n/2)
+            quickSort(pivo + 1, fim); // Q(n/2)
         }
     }
 
     /*
-     * a = cada chamada do método da chamada recursiva, mede o tamanho da entrada e
-     * dos subproblemas.
-     * b = n / subtamanho (nesse caso foi usado a média)
-     * F(n) = custo de particionamento: ocorre somente quando posicaoMaior <
-     * posicaoMenor, e isso acontece algumas vezes (mas não em todas as iterações)
-     * 
-     * ------- Custo T(n) para quickSort(0, n) --------------------
-     * T(n) = 6449 * T(n/2,96) + 74194
-     * ------------------------------------------------------------
-     * 
-     * Como a função T(n) para quickSort contém múltiplas chamadas
-     * recursivas com tamanho reduzido por um fator de aproximadamente b = 2,96,
-     * a função corresponde à forma geral de recorrência do Teorema Mestre:
-     *
-     * T(n) = a . T(n/b) + f(n), onde:
-     * a = 6449
-     * b = 2,96
-     * f(n) = 74194
-     *
-     * Medindo o custo total da recursão:
-     * log_b a = log_2,96 (6449)
-     *
-     * log_2,96 (6449) ≈ log_10(6449) / log_10(2,96)
-     * ≈ 3,809 / 0,471
-     * ≈ 8,085
-     *
-     * Como f(n) = 74194 pertence a Θ(1), e:
-     * f(n) = O(n^c) com c = 0
-     * c < log_b a (0 < 8,085)
-     *
-     * Isto caracteriza o **Caso 1 do Teorema Mestre**, que diz:
-     * Se f(n) = O(n^c), com c < log_b a, então:
-     * T(n) ∈ Θ(n^log_b a)
-     *
-     * Conclusão:
-     * T(n) ∈ Θ(n^8,083)
+     * ------- Custo P(n) para particionar(0, n) ------------------
+     * * P(n) = Operações básicas + do while's + if + break 
+     *  P(n) = 7 + n/2 . 2 +  n/2 . 1 + n/2 . 3 + 1
+     *  P(n) = 6n/2 + 8
+     *  P(n) = 3n + 8
      * ------------------------------------------------------------
      */
 
-    private void quickSort(int inicio, int fim) {
-        subproblemas++;// Calcular a quantidade de chamadas recursivas que o algoritmo faz
-
-        if (inicio < fim) {
-            int n = fim - inicio + 1;
-
-            int pivo = particionar(inicio, fim);
-
-            int tamEsquerda = pivo - 1 - inicio + 1;
-            int tamDireita = fim - (pivo + 1) + 1;
-
-            if (tamEsquerda > 0) {
-                somaDosFatores += (double) n / tamEsquerda; // Para cada divisão do problema (chamada recursiva),
-                                                            // calcula-se o fator n / subproblema para o cálculo da
-                                                            // mediaFatorDivisao
-                chamadasValidas++; // Calcular a quantidade de camadas válidas par a divisão do mediaFatorDivisao
-            }
-
-            if (tamDireita > 0) {
-                somaDosFatores += (double) n / tamDireita; // Para cada divisão do problema (chamada recursiva),
-                                                           // calcula-se o fator n / subproblema para o cálculo da
-                                                           // mediaFatorDivisao
-                chamadasValidas++;// Calcular a quantidade de camadas válidas par a divisão do mediaFatorDivisao
-            }
-
-            quickSort(inicio, pivo - 1);
-            quickSort(pivo + 1, fim);
-        }
-    }
-
+    @SuppressWarnings("unchecked")
     private int particionar(int inicio, int fim) {
-        int posicaoMaior = inicio;
-        int posicaoMenor = fim + 1;
-        T pivo = (T) getInfo()[inicio];
+        int posicaoMaior = inicio; // 1
+        int posicaoMenor = fim + 1; // 1
+        T pivo = (T) getInfo()[inicio]; // 1
 
         while (true) {
             do {
-                posicaoMaior++;
-                custoParticionamento++;// Incrementado a cada operação de comparação dentro de particionar
-            } while (posicaoMaior <= fim && getInfo()[posicaoMaior].compareTo(pivo) < 0);
-
+                posicaoMaior++; // 1
+            } while (posicaoMaior <= fim && getInfo()[posicaoMaior].compareTo(pivo) < 0); // n/2 
+        
             do {
-                posicaoMenor--;
-                custoParticionamento++;// Incrementado a cada operação de comparação dentro de particionar
-            } while (posicaoMenor >= inicio && getInfo()[posicaoMenor].compareTo(pivo) > 0);
+                posicaoMenor--; // 1
+            } while (posicaoMenor >= inicio && getInfo()[posicaoMenor].compareTo(pivo) > 0); // n/2 
+        
+            /* Obs.: a soma das execuções dos dois do while deve ser menor ou igual a n. 
+             * As execuções são limitadas até que posicaoMaior e posicaoMenor se cruzem.
+             * Usar n/2 para ambos é uma estimativa.
+            */
 
-            if (posicaoMaior >= posicaoMenor) {
-                break;
+            if (posicaoMaior >= posicaoMenor) { // n/2 . 1
+                break; // 1
             }
 
-            trocar(posicaoMaior, posicaoMenor);
+            trocar(posicaoMaior, posicaoMenor); // n/2 . 3
         }
-        trocar(posicaoMenor, inicio);
-        return posicaoMenor;
+        trocar(posicaoMenor, inicio); // 3
+        return posicaoMenor; // 1
     }
 }
